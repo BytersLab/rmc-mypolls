@@ -22,7 +22,6 @@ function App() {
       <h1>MyPoll</h1>
       <div className="pollcontainer">
         <Poll dataArray={dataArray} color={"#05def3"} />
-        <Poll dataArray={dataArray} color={"#aade33"} />
       </div>
     </>
   );

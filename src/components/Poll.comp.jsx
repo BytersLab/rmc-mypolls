@@ -1,5 +1,6 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
-import { Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
+import { Bar, BarChart, XAxis } from "recharts";
 
 export function Poll({ dataArray, color }) {
   const [data, setData] = useState(dataArray);
@@ -21,7 +22,7 @@ export function Poll({ dataArray, color }) {
   return (
     <>
       <div className="poll">
-        <h3 className="poll-title">Whats Movie you want to see?</h3>
+        <h2 className="poll-title">Whats Movie you want to see?</h2>
         {
           {
             1: (
@@ -29,7 +30,7 @@ export function Poll({ dataArray, color }) {
                 width={300}
                 height={300}
                 data={data}
-                margin={{ bottom: 120 }}
+                margin={{ bottom: 48 }}
               >
                 <Bar dataKey="value" fill={color} />
                 <XAxis dataKey={"name"} interval={0} angle={-10} dy={32} />
@@ -52,3 +53,8 @@ export function Poll({ dataArray, color }) {
     </>
   );
 }
+
+Poll.propTypes = {
+  dataArray: PropTypes.array,
+  color: PropTypes.string,
+};
