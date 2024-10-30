@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
+import "./Poll.style.css";
 
 export function Poll({ dataArray }) {
   const [data, setData] = useState(dataArray);
