@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { Poll } from "./components/Poll.comp.jsx";
+import { Modal } from "./components/Modal.comp.jsx";
 
 function App() {
   const [dataArray, setDataArray] = useState([]);
@@ -13,7 +14,7 @@ function App() {
   return (
     <>
       <h1>MyPoll</h1>
-
+      <Modal />
       {dataArray.length ? (
         <div className="pollcontainer">
           {dataArray.map((item, index) => {
