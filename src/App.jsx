@@ -8,13 +8,20 @@ function App() {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("dataArray"));
+    if (!data) {
+      return;
+    }
     setDataArray(data);
   }, []);
+
+  useEffect(() => {
+    console.log(dataArray);
+  }, [dataArray]);
 
   return (
     <>
       <h1>MyPoll</h1>
-      <Modal />
+      <Modal dataArray={dataArray} setDataArray={setDataArray} />
       {dataArray.length ? (
         <div className="pollcontainer">
           {dataArray.map((item, index) => {

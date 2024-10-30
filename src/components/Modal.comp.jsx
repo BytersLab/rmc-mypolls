@@ -1,7 +1,8 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import "./Modal.style.css";
 
-export function Modal() {
+export function Modal({ dataArray, setDataArray }) {
   const [modal, setModal] = useState(false);
   const [formdata, setFormData] = useState({
     title: "",
@@ -22,7 +23,23 @@ export function Modal() {
 
   const onCreatePoll = (event) => {
     event.preventDefault();
-    console.log(formdata);
+    const options = [
+      { name: formdata.option1, value: 0 },
+      { name: formdata.option2, value: 0 },
+      { name: formdata.option3, value: 0 },
+    ];
+
+    const newDataArray = [
+      ...dataArray,
+      {
+        title: formdata.title,
+        options: options,
+      },
+    ];
+
+    setDataArray(newDataArray);
+    localStorage.setItem("dataArray", JSON.stringify(newDataArray));
+    setModal(false);
   };
 
   return (
@@ -72,3 +89,8 @@ export function Modal() {
     </>
   );
 }
+
+Modal.propTypes = {
+  setDataArray: PropTypes.func.isRequired,
+  dataArray: PropTypes.array.isRequired,
+};
