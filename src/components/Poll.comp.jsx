@@ -4,9 +4,13 @@ import { Bar, BarChart, XAxis } from "recharts";
 import { getRandomColor } from "./../lib/colorgen.tool.js";
 import "./Poll.style.css";
 
-export function Poll({ dataObj, dataArray }) {
+export function Poll({ dataObj, dataArray, setDataArray }) {
   const [pollStatus, setPollStatus] = useState(dataObj.status);
   const { options, id, title } = dataObj;
+
+  const randomColor = useMemo(() => {
+    return getRandomColor();
+  }, []);
 
   const onPollChange = (event) => {
     options.filter((item) => {
@@ -27,9 +31,15 @@ export function Poll({ dataObj, dataArray }) {
     setPollStatus(1);
   };
 
-  const randomColor = useMemo(() => {
-    return getRandomColor();
-  }, []);
+  const onPollDelete = () => {
+    const newDataArray = dataArray.filter((item) => {
+      if (id !== item.id) {
+        return item;
+      }
+    });
+    setDataArray(newDataArray);
+    localStorage.setItem("dataArray", JSON.stringify(newDataArray));
+  };
 
   return (
     <>
@@ -61,6 +71,7 @@ export function Poll({ dataObj, dataArray }) {
             ),
           }[pollStatus]
         }
+        <button onClick={onPollDelete}>Delete</button>
       </div>
     </>
   );

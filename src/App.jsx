@@ -26,7 +26,14 @@ function App() {
       {dataArray.length ? (
         <div className="pollcontainer">
           {dataArray.map((item, index) => {
-            return <Poll key={index} dataObj={item} dataArray={dataArray} />;
+            return (
+              <Poll
+                key={index}
+                dataObj={item}
+                dataArray={dataArray}
+                setDataArray={setDataArray}
+              />
+            );
           })}
         </div>
       ) : (
