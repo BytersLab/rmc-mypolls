@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
 import { getRandomColor } from "./../lib/colorgen.tool.js";
 import "./Poll.style.css";
+import { PollContext } from "../contexts/Polls.context.jsx";
 
-export function Poll({ dataObj, dataArray, setDataArray }) {
+export function Poll({ dataObj }) {
+  const { polls, setPolls } = useContext(PollContext);
   const [pollStatus, setPollStatus] = useState(dataObj.status);
   const { options, id, title } = dataObj;
 
@@ -20,7 +22,7 @@ export function Poll({ dataObj, dataArray, setDataArray }) {
       return { ...item, value: item.value++ };
     });
 
-    const newLocalStorangeData = dataArray.filter((item) => {
+    const newLocalStorangeData = polls.filter((item) => {
       if (item.id !== id) {
         return item;
       }
@@ -32,12 +34,12 @@ export function Poll({ dataObj, dataArray, setDataArray }) {
   };
 
   const onPollDelete = () => {
-    const newDataArray = dataArray.filter((item) => {
+    const newDataArray = polls.filter((item) => {
       if (id !== item.id) {
         return item;
       }
     });
-    setDataArray(newDataArray);
+    setPolls(newDataArray);
     localStorage.setItem("dataArray", JSON.stringify(newDataArray));
   };
 
@@ -79,5 +81,4 @@ export function Poll({ dataObj, dataArray, setDataArray }) {
 
 Poll.propTypes = {
   dataObj: PropTypes.object.isRequired,
-  dataArray: PropTypes.array.isRequired,
 };

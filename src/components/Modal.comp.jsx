@@ -1,9 +1,10 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./Modal.style.css";
+import { PollContext } from "../contexts/Polls.context.jsx";
 
-export function Modal({ dataArray, setDataArray }) {
+export function Modal() {
+  const { polls, setPolls } = useContext(PollContext);
   const [modal, setModal] = useState(false);
   const [formdata, setFormData] = useState({
     title: "",
@@ -31,7 +32,7 @@ export function Modal({ dataArray, setDataArray }) {
     ];
 
     const newDataArray = [
-      ...dataArray,
+      ...polls,
       {
         title: formdata.title,
         options: options,
@@ -40,7 +41,7 @@ export function Modal({ dataArray, setDataArray }) {
       },
     ];
 
-    setDataArray(newDataArray);
+    setPolls(newDataArray);
     localStorage.setItem("dataArray", JSON.stringify(newDataArray));
     setModal(false);
   };
@@ -92,8 +93,3 @@ export function Modal({ dataArray, setDataArray }) {
     </>
   );
 }
-
-Modal.propTypes = {
-  setDataArray: PropTypes.func.isRequired,
-  dataArray: PropTypes.array.isRequired,
-};
