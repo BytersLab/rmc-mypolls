@@ -3,9 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 import validator from "validator";
 import "./Modal.style.css";
 import { PollContext } from "../contexts/Polls.context.jsx";
+import { LoaderContext } from "../contexts/Loader.context.jsx";
 
 export function Modal() {
   const { polls, setPolls } = useContext(PollContext);
+  const { loading } = useContext(LoaderContext);
   const [modal, setModal] = useState(false);
   const [error, setError] = useState("");
   const [formdata, setFormData] = useState({
@@ -46,19 +48,19 @@ export function Modal() {
 
     switch (false) {
       // Length
-      case validator.matches(title.trim(), /^[a-zA-Z0-9äöüÄÖÜß ]{3,20}$/):
+      case validator.matches(title.trim(), /^[a-zA-Z0-9äöüÄÖÜß? ]{3,}$/):
         setError(
           "Title needs at least 3 chars, only allowed are letters, numbers and spaces"
         );
         break;
-      case validator.matches(option1.trim(), /^[a-zA-Z0-9äöüÄÖÜß ]{1,15}$/):
+      case validator.matches(option1.trim(), /^[a-zA-Z0-9äöüÄÖÜß ]{1,}$/):
         setError("Option 1 needs at least 1 chars");
         break;
-      case validator.matches(option2.trim(), /^[a-zA-Z0-9äöüÄÖÜß ]{1,15}$/):
-        setError("Option 2 needs at least 1 chars");
+      case validator.matches(option2.trim(), /^[a-zA-Z0-9äöüÄÖÜß ]{1,}$/):
+        setError("Option 2 needs at least 1 chars, max 15");
         break;
-      case validator.matches(option3.trim(), /^[a-zA-Z0-9äöüÄÖÜß ]{1,15}$/):
-        setError("Option 3 needs at least 1 chars");
+      case validator.matches(option3.trim(), /^[a-zA-Z0-9äöüÄÖÜß ]{1,}$/):
+        setError("Option 3 needs at least 1 chars, max 15");
         break;
 
       //More Cases
@@ -123,9 +125,15 @@ export function Modal() {
           ),
         }[modal]
       }
-      <button className="trigger-modal" onClick={onTriggerModal}>
-        Create Poll
-      </button>
+      {
+        {
+          false: (
+            <button className="trigger-modal" onClick={onTriggerModal}>
+              Create Poll
+            </button>
+          ),
+        }[loading]
+      }
     </>
   );
 }
