@@ -1,26 +1,26 @@
 import PropTypes from "prop-types";
 import { useMemo, useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
-import "./Poll.style.css";
 import { getRandomColor } from "./../lib/colorgen.tool.js";
+import "./Poll.style.css";
 
 export function Poll({ dataObj, dataArray }) {
-  const [pollStatus, setPollStatus] = useState(0);
+  const [pollStatus, setPollStatus] = useState(dataObj.status);
+  const { options, id, title } = dataObj;
+
   const onPollChange = (event) => {
-    const objName = event.target.innerText;
-    dataObj.options.filter((item) => {
-      if (item.name !== objName) {
+    options.filter((item) => {
+      if (item.name !== event.target.innerText) {
         return item;
       }
       return { ...item, value: item.value++ };
     });
 
     const newLocalStorangeData = dataArray.filter((item) => {
-      if (item.id !== dataObj.id) {
+      if (item.id !== id) {
         return item;
       }
-      item.status = 1;
-      return item;
+      return (item.status = 1);
     });
 
     localStorage.setItem("dataArray", JSON.stringify(newLocalStorangeData));
@@ -29,19 +29,19 @@ export function Poll({ dataObj, dataArray }) {
 
   const randomColor = useMemo(() => {
     return getRandomColor();
-  }, [dataObj]);
+  }, []);
 
   return (
     <>
       <div className="poll">
-        <h2 className="poll-title">{dataObj.title}</h2>
+        <h2 className="poll-title">{title}</h2>
         {
           {
             1: (
               <BarChart
                 width={300}
                 height={300}
-                data={dataObj.options}
+                data={options}
                 margin={{ bottom: 48 }}
               >
                 <Bar dataKey="value" fill={randomColor} />
@@ -50,7 +50,7 @@ export function Poll({ dataObj, dataArray }) {
             ),
             0: (
               <div className="poll-button-container">
-                {dataObj.options.map((item, index) => {
+                {options.map((item, index) => {
                   return (
                     <button key={index} onClick={onPollChange}>
                       {item.name}
@@ -59,7 +59,7 @@ export function Poll({ dataObj, dataArray }) {
                 })}
               </div>
             ),
-          }[(pollStatus, dataObj.status)]
+          }[pollStatus]
         }
       </div>
     </>
