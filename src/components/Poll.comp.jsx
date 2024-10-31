@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
 import "./Poll.style.css";
+import { getRandomColor } from "./../lib/colorgen.tool.js";
 
 export function Poll({ dataObj, dataArray }) {
   const [pollStatus, setPollStatus] = useState(0);
@@ -26,6 +27,10 @@ export function Poll({ dataObj, dataArray }) {
     setPollStatus(1);
   };
 
+  const randomColor = useMemo(() => {
+    return getRandomColor();
+  }, [dataObj]);
+
   return (
     <>
       <div className="poll">
@@ -39,7 +44,7 @@ export function Poll({ dataObj, dataArray }) {
                 data={dataObj.options}
                 margin={{ bottom: 48 }}
               >
-                <Bar dataKey="value" fill={dataObj.color} />
+                <Bar dataKey="value" fill={randomColor} />
                 <XAxis dataKey={"name"} interval={0} angle={-10} dy={32} />
               </BarChart>
             ),
