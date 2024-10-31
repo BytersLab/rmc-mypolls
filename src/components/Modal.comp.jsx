@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
 import "./Modal.style.css";
 
 export function Modal({ dataArray, setDataArray }) {
@@ -34,6 +35,8 @@ export function Modal({ dataArray, setDataArray }) {
       {
         title: formdata.title,
         options: options,
+        id: uuidv4(),
+        status: 0,
       },
     ];
 

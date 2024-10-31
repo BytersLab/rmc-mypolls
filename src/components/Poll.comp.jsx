@@ -3,8 +3,9 @@ import { useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
 import "./Poll.style.css";
 
-export function Poll({ dataArray }) {
-  const [data, setData] = useState(dataArray);
+export function Poll({ dataObj, dataArray }) {
+  console.log("render");
+  const [data, setData] = useState(dataObj);
   const [pollStatus, setPollStatus] = useState(0);
 
   const onPollChange = (event) => {
@@ -16,6 +17,16 @@ export function Poll({ dataArray }) {
       }
       return { ...item, value: item.value++ };
     });
+
+    const newLocalStorangeData = dataArray.filter((item) => {
+      if (item.id !== dataObj.id) {
+        return item;
+      }
+      item.status = 1;
+      return item;
+    });
+
+    localStorage.setItem("dataArray", JSON.stringify(newLocalStorangeData));
     setData({ ...data, options: newData });
     setPollStatus(1);
   };
@@ -48,7 +59,7 @@ export function Poll({ dataArray }) {
                 })}
               </div>
             ),
-          }[pollStatus]
+          }[(pollStatus, dataObj.status)]
         }
       </div>
     </>
@@ -56,5 +67,6 @@ export function Poll({ dataArray }) {
 }
 
 Poll.propTypes = {
-  dataArray: PropTypes.object,
+  dataObj: PropTypes.object.isRequired,
+  dataArray: PropTypes.array.isRequired,
 };
